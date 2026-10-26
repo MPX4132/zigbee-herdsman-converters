@@ -2676,9 +2676,9 @@ const shellyTRVExternalOccupancyOnEvent: OnEvent.Handler = (event) => {
     );
 };
 
-const shellyTRVExternalInputsOnEvent: OnEvent.Handler = (event) => {
-    shellyTRVExternalTemperatureOnEvent(event);
-    shellyTRVExternalOccupancyOnEvent(event);
+const shellyTRVExternalInputsOnEvent: OnEvent.Handler = async (event) => {
+    await shellyTRVExternalTemperatureOnEvent(event);
+    await shellyTRVExternalOccupancyOnEvent(event);
 };
 
 // =============================================================================
@@ -3527,6 +3527,22 @@ export const definitions: DefinitionWithExtend[] = [
     {
         fingerprint: [{modelID: "BLU DoorWindow ZB", manufacturerName: "Shelly"}],
         model: "SBDW-103C",
+        vendor: "Shelly",
+        description: "BLU DoorWindow ZB",
+        fromZigbee: [fzLocal.blu_door_window],
+        toZigbee: [],
+        exposes: [e.contact(), handlePosition, e.battery_low()],
+        extend: [m.battery(), ...shellyModernExtend.shellyLightLevel(), m.identify()],
+        configure: async (device, coordinatorEndpoint) => {
+            const endpoint = device.getEndpoint(1);
+            if (endpoint) {
+                await endpoint.read("ssIasZone", ["zoneStatus"]);
+            }
+        },
+    },
+    {
+        fingerprint: [{modelID: "BLU DoorWindow Mini ZB", manufacturerName: "Shelly"}],
+        model: "SBDW-203C",
         vendor: "Shelly",
         description: "BLU DoorWindow ZB",
         fromZigbee: [fzLocal.blu_door_window],
