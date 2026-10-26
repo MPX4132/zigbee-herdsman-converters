@@ -26581,7 +26581,7 @@ export const definitions: DefinitionWithExtend[] = [
                 .withValueStep(1)
                 .withUnit("lx")
                 .withDescription("Illuminance calibration"),
-            e.enum("water_warning", ea.STATE, ["none", "alarm"]).withDescription("Water shortage warning").withCategory("diagnostic"),
+            e.probe_fault("probe"),
             e
                 .enum("battery_state", ea.STATE, ["low", "middle", "high"])
                 .withDescription("low: 16.67%, middle:16.68-83.33%, high: 83.34-100%")
@@ -26603,7 +26603,7 @@ export const definitions: DefinitionWithExtend[] = [
                 // First entry is used for incoming reports, the second one for setting.
                 [110, "soil_moisture_warning", {from: tuya.valueConverter.raw.from}],
                 [110, "soil_moisture_warning_threshold", {to: tuya.valueConverter.raw.to}],
-                [111, "water_warning", tuya.valueConverterBasic.lookup({none: tuya.enum(0), alarm: tuya.enum(1)})],
+                [111, "probe_fault", tuya.valueConverterBasic.lookup({nominal: tuya.enum(0), fault: tuya.enum(1)})],
             ],
         },
     },
